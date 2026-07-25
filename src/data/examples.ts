@@ -8,7 +8,7 @@ export type Example = {
 
 // Hero example shown on the home page. Represents the SKILL output —
 // the rewrite produced by your host agent's LLM after applying the
-// 8-step procedure. Compare with EXAMPLES[0], which has the same
+// 9-step procedure. Compare with EXAMPLES[0], which has the same
 // `before` string but shows the deterministic CLI baseline output:
 // same input, two layers, very different richness.
 export const HERO_EXAMPLE: Example = {

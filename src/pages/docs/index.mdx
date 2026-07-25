@@ -30,44 +30,76 @@ which means you can pipe anything into it.
 | `--prompt <text>` | string | — | Prompt body to improve. Mutually exclusive with `--file`. |
 | `--file <path>` | path | — | Read the prompt from a file. |
 | `--mode <name>` | enum | `standard` | `final_only` / `compact` / `standard` / `diagnostic`. |
-| `--target <agent>` | enum | inferred | `claude` / `openai` / `gemini` / `local` / `coding-agent` / `research-agent` / `tool-agent`. |
 | `--task <type>` | enum | inferred | Force a task type (research, writing, coding, …). |
 | `--language <code>` | enum | auto | `it` / `en`. Forces the output language. |
 | `--audience "<text>"` | string | — | Audience descriptor injected into `<context>`. |
-| `--token-budget <level>` | enum | `balanced` | `minimal` / `balanced` / `generous`. |
-| `--clarify <policy>` | enum | `auto` | `auto` / `always` / `never`. |
+| `--token-budget <level>` | enum | `balanced` | `minimal` drops `<quality_bar>` and non-load-bearing `<context>`; `generous` expands the quality bar. |
+| `--clarify <policy>` | enum | `auto` | `auto` / `always` / `never`. `never` still warns on high-risk domains. |
+| `--constraints "<list>"` | string | — | Pipe-separated constraints, e.g. `"max 200 words\|no markdown"`. |
+| `--max-bytes <n>` | int | `1048576` | Size cap for `--file` / stdin. |
 | `--no-score` | flag | off | Skip the 0–100 score in the output. |
 | `--no-rationale` | flag | off | Hide per-category rationale in `diagnostic` mode. |
 | `doctor` | subcommand | — | Runs installation + health checks. |
 | `--help`, `--version` | flags | — | Standard. |
 
+"Load-bearing" context means a real audience (`--audience`) or a `<context>` block you supplied
+yourself. A bare `[ASSUMPTION: …]` placeholder is not, so `minimal` drops it.
+
+There is no `--target` flag. It existed and did nothing — `--target local` and `--target claude`
+produced byte-identical output — so it was removed rather than left as a decorative no-op.
+`targetAgent` remains a Skill option, where an agent can genuinely adapt the rewrite.
+
+### Exit codes
+
+| Code | Meaning |
+|---|---|
+| `0` | Success. |
+| `1` | Usage error: unknown flag, missing value, invalid enum, no prompt. |
+| `2` | Input error: unreadable file, over the size cap, invalid UTF-8. |
+
+Unknown flags and invalid values are errors, not warnings — a typo must not silently run with
+defaults in a CI gate.
+
 ## Library API
 
 ```ts
-import { improvePrompt, scorePrompt } from 'ai-prompting';
+import { improvePrompt } from 'ai-prompting';
 
 const result = improvePrompt({
   originalPrompt: 'help me write a release note',
-  mode: 'standard',
+  outputMode: 'standard',
   language: 'en'
 });
 
-console.log(result.improvedPrompt);
-console.log(result.score.before, '→', result.score.after);
+console.log(result.improved);      // string — the rewritten prompt
+console.log(result.assumptions);   // string[] — what it had to assume
+console.log(result.scores.before.total, '→', result.scores.after.total);  // 30 → 79
 ```
+
+The full option surface is `PromptImproverOptions`; the return shape is `ImprovementResult`. Both
+ship as types in `dist/src/types.d.ts`.
 
 `improvePrompt` is pure: same input → same output. No network, no global state. Safe to use in CI.
 
 ## Output modes
 
 - `final_only` — just the improved prompt body. Useful for piping into another tool.
-- `compact` — improved prompt + one-line summary. Good default for chat.
-- `standard` — improved prompt + what changed + estimated impact + assumptions.
-- `diagnostic` — everything in `standard` plus the per-category rubric breakdown.
+- `compact` — improved prompt + a one-line change summary + a one-line score. Good default for chat.
+- `standard` — improved prompt + what changed + structural coverage + assumptions.
+- `diagnostic` — everything in `standard` plus the per-category rubric breakdown and the reason for each score.
 
-## The 100-point rubric
+## The 100-point structural-coverage rubric
 
-Nine heuristic categories. Numbers are estimates, not measured gains.
+Nine heuristic categories. The score measures whether a prompt **declares** the things that make
+prompts legible — role, objective, context, steps, constraints, output format, success criteria —
+and whether it avoids padding. It does **not** measure whether the prompt asks for the right thing,
+or how good the answer will be. A prompt can score 90 and be pointed at the wrong problem.
+
+Two things to know before reading a number: every category has a non-zero floor, so even an empty
+prompt lands near 40/100 — treat it as a relative before/after signal, not a grade; and a section
+only earns credit when it carries content, so a `<context>` holding nothing but `[ASSUMPTION: …]`
+scores as absent. There is no eval set behind the number, so no correlation with output quality is
+claimed.
 
 | Category | Weight | What it measures |
 |---|---|---|

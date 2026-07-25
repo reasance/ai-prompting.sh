@@ -18,25 +18,25 @@ const steps = [
   {
     n: '03',
     title: 'Your agent reads SKILL.md',
-    body: 'The host loads the 8-step procedure plus references on demand. No network call to us, no API key.'
+    body: 'The host loads the 9-step procedure plus references on demand. No network call to us, no API key.'
   },
   {
     n: '04',
     title: 'Your agent rewrites',
-    body: "The host's own LLM (Claude, GPT, Gemini, …) runs the procedure: strips padding, scaffolds structure, surfaces assumptions, scores quality."
+    body: "The host's own LLM (Claude, GPT, Gemini, …) runs the procedure: strips padding, scaffolds structure, surfaces assumptions, scores structural coverage."
   }
 ];
 ---
 
 <BaseLayout
   title="ai-prompting — improve any LLM prompt inside your agent"
-  description="Installable Skill for Claude Code, Codex CLI, and Cursor that drives your agent's LLM through a structured 8-step prompt-improvement procedure."
+  description="Installable Skill for Claude Code, Codex CLI, and Cursor that drives your agent's LLM through a structured 9-step prompt-improvement procedure."
 >
   <section class="relative isolate py-20 md:py-28 -mt-12 px-6 -mx-6">
     <div class="absolute inset-0 -z-10 grid-bg opacity-50 pointer-events-none"></div>
     <div class="inline-flex items-center gap-2 text-xs font-mono text-[var(--color-muted)] border border-[var(--color-border)] rounded-full px-3 py-1 mb-8">
       <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]"></span>
-      <span>v0.2.1 · Agent Skill for Claude Code · Codex CLI · Cursor · Gemini CLI</span>
+      <span>v0.3.0 · Agent Skill for Claude Code · Codex CLI · Cursor · Gemini CLI</span>
     </div>
     <h1 class="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05] max-w-3xl">
       Improve any prompt.
@@ -45,8 +45,8 @@ const steps = [
     </h1>
     <p class="mt-6 max-w-2xl text-lg text-[var(--color-muted)]">
       An installable <a href="/skill" class="text-[var(--color-fg)] underline decoration-[var(--color-border)] hover:decoration-[var(--color-accent)]">Skill</a>
-      that drives your agent&rsquo;s own LLM through a structured 8-step procedure: strip padding,
-      scaffold the prompt, surface assumptions, score quality. No service to sign up for, no API key,
+      that drives your agent&rsquo;s own LLM through a structured 9-step procedure: strip padding,
+      scaffold the prompt, surface assumptions, score structural coverage. No service to sign up for, no API key,
       nothing to host. We ship the recipe; your host LLM does the work.
     </p>
 
@@ -119,8 +119,9 @@ const steps = [
         Honest
       </h3>
       <p class="text-sm text-[var(--color-muted)] leading-relaxed">
-        Heuristic 0–100 score with per-category rationale. No "AI-powered" hype, no measured-gain
-        claims without test data. Numbers are estimates and we say so on every page.
+        Heuristic 0–100 score with per-category rationale. It measures whether a prompt declares
+        role, constraints and output format — not whether it asks for the right thing. No eval set
+        behind it, so no correlation with output quality is claimed.
       </p>
     </div>
     <div>
@@ -130,7 +131,7 @@ const steps = [
       </h3>
       <p class="text-sm text-[var(--color-muted)] leading-relaxed">
         MIT license. Zero runtime dependencies. The complete TypeScript core fits in
-        ~700 lines — auditable in 20 minutes if you want to know what you&rsquo;re shipping.
+        ~2,000 lines — auditable in an afternoon if you want to know what you&rsquo;re shipping.
       </p>
     </div>
   </section>
@@ -145,7 +146,7 @@ const steps = [
     </p>
     <div class="space-y-3">
       <CodeBlock code={`npx ai-prompting improve --prompt "help me write something" --mode diagnostic`} />
-      <CodeBlock code={`echo "help me debug this" | npx ai-prompting improve --target claude`} />
+      <CodeBlock code={`echo "help me debug this" | npx ai-prompting improve --mode compact`} />
       <CodeBlock code={`npx ai-prompting improve --file ./prompt.md --mode compact --token-budget minimal`} />
     </div>
     <p class="mt-4 text-sm text-[var(--color-muted)] max-w-2xl">
@@ -166,7 +167,7 @@ const steps = [
         <ul class="space-y-2 text-sm">
           <li class="flex gap-2"><span class="text-[var(--color-accent)]">→</span> A Skill that runs inside any compatible agent.</li>
           <li class="flex gap-2"><span class="text-[var(--color-accent)]">→</span> A deterministic CLI for CI / pre-commit gates.</li>
-          <li class="flex gap-2"><span class="text-[var(--color-accent)]">→</span> A 0–100 quality estimate with rationale.</li>
+          <li class="flex gap-2"><span class="text-[var(--color-accent)]">→</span> A 0–100 structural-coverage estimate with rationale.</li>
           <li class="flex gap-2"><span class="text-[var(--color-accent)]">→</span> An audit-friendly TypeScript library.</li>
         </ul>
       </div>

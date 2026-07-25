@@ -33,9 +33,14 @@ cp node_modules/ai-prompting/.claude/commands/improve.md \\
 ### B. As a per-user Skill (cross-host)
 
 The package ships a Node-only installer that detects which agent hosts are available and copies
-the slash command into each user-level command directory.
+the slash command into each user-level command directory. It is a script, not a CLI subcommand —
+run it by path:
 
-<CodeBlock code={`npx ai-prompting install-command`} />
+<CodeBlock code={`# global install
+node "$(npm root -g)/ai-prompting/scripts/install-command.js"
+
+# project install
+node node_modules/ai-prompting/scripts/install-command.js`} />
 
 This will populate, for any host it finds:
 
@@ -82,9 +87,10 @@ manual import — the package ships `agents/openai.yaml` for Apps-SDK style host
 ## How the Skill works under the hood
 
 1. The host loads `SKILL.md`. The frontmatter tells it when to trigger; the body explains the
-   8-step decision flow.
-2. When the user invokes `/ai-prompting:improve`, the host reads any flags, classifies the input,
-   and (if needed) loads `references/*.md` for deeper rules.
+   9-step decision flow.
+2. When the user invokes `/ai-prompting:improve`, the slash command parses the flags and hands off
+   to `SKILL.md` — it is a thin adapter and holds no copy of the procedure. The host then
+   classifies the input and (if needed) loads `references/*.md` for deeper rules.
 3. The agent does the semantic rewrite using its own LLM. Padding is stripped, the canonical XML
    scaffold is filled in, assumptions are made explicit, and a 0–100 score is estimated.
 4. The output is rendered in the format defined by `--mode`.
