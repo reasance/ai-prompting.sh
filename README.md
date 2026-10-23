@@ -1,6 +1,6 @@
 # ai-prompting.sh
 
-Marketing + docs site for the [`ai-prompting`](https://github.com/matteoscurati/ai-prompting) Skill
+Marketing + docs site for the [`ai-prompting`](https://github.com/reasance/ai-prompting) Skill
 and CLI.
 
 Built with **Astro 5** + **Tailwind v4** + **TypeScript** + **MDX**. Static-only output. No
@@ -85,11 +85,11 @@ Node version and applies sensible cache rules out of the box.
 
 1. **Push the repo to GitHub** (one-time):
    ```bash
-   gh repo create matteoscurati/ai-prompting.sh --public --source=. --push
+   gh repo create reasance/ai-prompting.sh --public --source=. --push
    ```
 2. **Create a Worker connected to Git**:
    dash.cloudflare.com → Workers & Pages → Create → Connect to Git → pick
-   `matteoscurati/ai-prompting.sh`. The dashboard names the Worker
+   `reasance/ai-prompting.sh`. The dashboard names the Worker
    `ai-prompting-sh` (Workers names can't contain dots, so the domain dot
    becomes a hyphen).
 3. **Build settings** (Cloudflare auto-detects most of these):
@@ -167,5 +167,5 @@ Code: [MIT](./LICENSE). Content (prose, diagrams, examples): CC BY 4.0.
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md). The Skill itself lives in
-[`matteoscurati/ai-prompting`](https://github.com/matteoscurati/ai-prompting) — bug reports about
+[`reasance/ai-prompting`](https://github.com/reasance/ai-prompting) — bug reports about
 the Skill or CLI go there. Issues about the website (copy, layout, broken links) go here.

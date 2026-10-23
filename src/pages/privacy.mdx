@@ -47,7 +47,7 @@ website.
 The analytics script and the event-ingest endpoint are both served from
 the first-party subdomain `analytics.ai-prompting.sh`. That subdomain is
 fronted by a small **Cloudflare Worker** (operated by us, source code at
-[`worker/`](https://github.com/matteoscurati/ai-prompting.sh/tree/main/worker))
+[`worker/`](https://github.com/reasance/ai-prompting.sh/tree/main/worker))
 that forwards requests to Umami Cloud unchanged. The Worker:
 
 - does not log or persist requests

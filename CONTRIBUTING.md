@@ -1,15 +1,15 @@
 # Contributing
 
 This repo is the **website** for the `ai-prompting` Skill + CLI. The Skill and CLI themselves live
-in [`matteoscurati/ai-prompting`](https://github.com/matteoscurati/ai-prompting).
+in [`reasance/ai-prompting`](https://github.com/reasance/ai-prompting).
 
 ## What belongs where
 
 | Issue / PR is about | Open it in |
 |---|---|
-| Bug in the CLI (`ai-prompting improve`, `ai-prompting doctor`) | [ai-prompting](https://github.com/matteoscurati/ai-prompting) |
-| Bug in the Skill (`/ai-prompting:improve` slash command, SKILL.md) | [ai-prompting](https://github.com/matteoscurati/ai-prompting) |
-| New rubric category, new task type, new agent target | [ai-prompting](https://github.com/matteoscurati/ai-prompting) |
+| Bug in the CLI (`ai-prompting improve`, `ai-prompting doctor`) | [ai-prompting](https://github.com/reasance/ai-prompting) |
+| Bug in the Skill (`/ai-prompting:improve` slash command, SKILL.md) | [ai-prompting](https://github.com/reasance/ai-prompting) |
+| New rubric category, new task type, new agent target | [ai-prompting](https://github.com/reasance/ai-prompting) |
 | Typo / broken link / wrong claim on the website | here |
 | New copy, new section, new before/after example on the website | here |
 | Performance regression on the website (Lighthouse, bundle size) | here |
@@ -19,7 +19,7 @@ in [`matteoscurati/ai-prompting`](https://github.com/matteoscurati/ai-prompting)
 Requires Node ≥ 20.
 
 ```bash
-git clone git@github.com:matteoscurati/ai-prompting.sh.git
+git clone git@github.com:reasance/ai-prompting.sh.git
 cd ai-prompting.sh
 npm install
 npm run dev
@@ -69,7 +69,7 @@ Examples on `/examples` are sourced from `src/pages/examples/index.astro`. Add a
 `npm run dev` and verify the new card renders with correct delta colors.
 
 If the example is also useful as a regression test, mirror it in the
-[main repo's `examples/`](https://github.com/matteoscurati/ai-prompting/tree/main/ai-prompting/examples).
+[main repo's `examples/`](https://github.com/reasance/ai-prompting/tree/main/ai-prompting/examples).
 
 ## Adding a new agent to the compatibility matrix
 
@@ -80,7 +80,7 @@ then alphabetically.
 ## Updating the changelog
 
 The `/changelog` page is **synced from the package repo**, not edited here. Source of truth:
-[`ai-prompting/CHANGELOG.md`](https://github.com/matteoscurati/ai-prompting/blob/main/ai-prompting/CHANGELOG.md).
+[`ai-prompting/CHANGELOG.md`](https://github.com/reasance/ai-prompting/blob/main/ai-prompting/CHANGELOG.md).
 Workflow:
 
 1. Land the changelog entry in the package repo first.
