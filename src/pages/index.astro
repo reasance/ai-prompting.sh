@@ -30,7 +30,7 @@ const steps = [
 
 <BaseLayout
   title="ai-prompting — improve any LLM prompt inside your agent"
-  description="Installable Skill for Claude Code, Codex CLI, and Cursor that drives your agent's LLM through a structured 9-step prompt-improvement procedure."
+  description="Installable Agent Skill for Claude Code, Codex, Gemini CLI and Cursor that drives your agent's LLM through a structured prompt-improvement procedure, tuned to the model you target."
 >
   <section class="relative isolate py-20 md:py-28 -mt-12 px-6 -mx-6">
     <div class="absolute inset-0 -z-10 grid-bg opacity-50 pointer-events-none"></div>
@@ -131,9 +131,42 @@ const steps = [
       </h3>
       <p class="text-sm text-[var(--color-muted)] leading-relaxed">
         MIT license. Zero runtime dependencies. The complete TypeScript core fits in
-        ~2,000 lines — auditable in an afternoon if you want to know what you&rsquo;re shipping.
+        ~2,200 lines — auditable in an afternoon if you want to know what you&rsquo;re shipping.
       </p>
     </div>
+  </section>
+
+  <section class="py-16 border-t border-[var(--color-border)]">
+    <h2 class="text-2xl font-semibold mb-2">Tuned to the model you target</h2>
+    <p class="text-[var(--color-muted)] mb-6 max-w-2xl">
+      Name a target &mdash; <code class="font-mono text-sm">--target opus-5.5</code>,
+      <code class="font-mono text-sm">gpt-6</code>, <code class="font-mono text-sm">gemini-4</code>,
+      <code class="font-mono text-sm">qwen3.8-27b</code> &mdash; and the Skill adapts the rewrite to
+      how that model behaves, not to its brand: how reasoning depth is set, whether sampling
+      parameters still apply, what structured output it guarantees, whether it accepts a prefilled
+      answer, how it handles tools. A model that already reasons gets no &ldquo;think step by
+      step&rdquo;; a model that refuses to expose its reasoning never gets asked to.
+    </p>
+    <ul class="flex flex-wrap gap-2 list-none p-0 mb-6" aria-label="Labs in the capability matrix">
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">Anthropic</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">OpenAI</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">Google</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">xAI</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">Meta</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">Mistral</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">DeepSeek</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">Qwen</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">Moonshot</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">Zhipu</li>
+      <li class="font-mono text-xs border border-[var(--color-border)] rounded-full px-3 py-1">MiniMax</li>
+    </ul>
+    <p class="text-sm text-[var(--color-muted)] max-w-2xl">
+      Every vendor note cites the official docs it was checked against and carries a verification
+      date. Notes older than 90 days are flagged for re-checking, so a stale claim shows its age
+      instead of passing as current. A model not in the
+      <a href="https://github.com/reasance/ai-prompting/blob/main/references/agent-compatibility.md#capability-matrix" class="underline decoration-[var(--color-border)] hover:decoration-[var(--color-accent)]" rel="noopener">capability matrix</a>
+      is handled by the same criteria, read from its model card.
+    </p>
   </section>
 
   <section class="py-16 border-t border-[var(--color-border)]">
@@ -151,7 +184,9 @@ const steps = [
     </div>
     <p class="mt-4 text-sm text-[var(--color-muted)] max-w-2xl">
       The CLI&rsquo;s output is a rule-based baseline — adequate for regression tests, not as rich
-      as what an LLM produces through the Skill. Pick the layer that matches your need.
+      as what an LLM produces through the Skill. It fills in defaults only where your prompt is
+      silent, and never overrides a length, count or format the prompt states. Pick the layer that
+      matches your need.
     </p>
   </section>
 
