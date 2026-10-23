@@ -53,7 +53,7 @@ Markdown: H2 title, 3–5 paragraphs, one optional pull-quote.
   scoreAfter: 80
 };
 
-// Generated with the package CLI (ai-prompting 0.4.0, --mode standard --language en):
+// Generated with the package CLI (ai-prompting 0.5.0, --mode standard --language en):
 // node ../ai-prompting/dist/src/cli.js improve --prompt "<before>" --mode standard --language en
 export const EXAMPLES: Example[] = [
   {
@@ -62,10 +62,6 @@ export const EXAMPLES: Example[] = [
     after: `<role>
 Senior editor focused on clarity, rhythm, and audience fit.
 </role>
-
-<context>
-[ASSUMPTION: no separate context block; the facts stated in the task are the context — flag load-bearing assumptions]
-</context>
 
 <task>
 help me write something good
@@ -77,26 +73,16 @@ help me write something good
 
 <output_format>
 Flowing prose; 60-90 word paragraphs; no bullets unless a real list; title + subtitle when appropriate.
-</output_format>
-
-<quality_bar>
-- Length, tone, and audience match the request.
-- Conformance to all constraints above.
-- Output matches the declared schema/format on the first try.
-</quality_bar>`,
+</output_format>`,
     scoreBefore: 30,
-    scoreAfter: 63
+    scoreAfter: 55
   },
   {
     label: 'Coding — under-specified task',
     before: 'fix the bug in the auth flow',
     after: `<role>
-Senior software engineer with experience in the requested language/framework.
+Senior software engineer.
 </role>
-
-<context>
-[ASSUMPTION: no separate context block; the facts stated in the task are the context — flag load-bearing assumptions]
-</context>
 
 <task>
 fix the bug in the auth flow
@@ -113,11 +99,9 @@ Code in a fenced block with language tag; precede with 2-4 lines explaining choi
 
 <quality_bar>
 - Builds cleanly and the affected tests pass.
-- Conformance to all constraints above.
-- Output matches the declared schema/format on the first try.
 </quality_bar>`,
     scoreBefore: 35,
-    scoreAfter: 67
+    scoreAfter: 64
   },
   {
     label: 'Research — missing scope',
@@ -125,10 +109,6 @@ Code in a fenced block with language tag; precede with 2-4 lines explaining choi
     after: `<role>
 Senior research analyst with rigorous citation and source-triangulation method.
 </role>
-
-<context>
-[ASSUMPTION: no separate context block; the facts stated in the task are the context — flag load-bearing assumptions]
-</context>
 
 <task>
 research llm prompt techniques
@@ -145,22 +125,16 @@ Summary (3-5 sentences); findings with inline [n] citations; open questions; num
 
 <quality_bar>
 - Answer is verifiable: every non-trivial claim has evidence or a source.
-- Conformance to all constraints above.
-- Output matches the declared schema/format on the first try.
 </quality_bar>`,
     scoreBefore: 33,
-    scoreAfter: 75
+    scoreAfter: 72
   },
   {
     label: 'Agentic — tool use',
     before: 'use the database tools to find inactive users',
     after: `<role>
-Tool-using agent: calls a tool only when a step needs it, recovers from errors, stops on explicit criteria.
+Tool-using agent: calls a tool only when a step needs it and follows the task's stop and retry rules.
 </role>
-
-<context>
-[ASSUMPTION: no separate context block; the facts stated in the task are the context — flag load-bearing assumptions]
-</context>
 
 <task>
 use the database tools to find inactive users
@@ -175,11 +149,9 @@ Final deliverable first; then a short log of actions taken (tool → result, one
 </output_format>
 
 <quality_bar>
-- Every step has an observable stop criterion.
-- Conformance to all constraints above.
-- Output matches the declared schema/format on the first try.
+- Ends with the deliverable, or with a report of what was tried and why it stopped.
 </quality_bar>`,
     scoreBefore: 38,
-    scoreAfter: 68
+    scoreAfter: 63
   }
 ];

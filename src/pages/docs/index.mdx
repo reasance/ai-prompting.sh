@@ -35,6 +35,7 @@ which means you can pipe anything into it.
 | `--audience "<text>"` | string | — | Audience descriptor injected into `<context>`. |
 | `--token-budget <level>` | enum | `balanced` | `minimal` drops `<quality_bar>` and non-load-bearing `<context>`; `generous` expands the quality bar. |
 | `--clarify <policy>` | enum | `auto` | `auto` / `always` / `never`. `never` still warns on high-risk domains. |
+| `--scaffold <policy>` | enum | `auto` | `auto` / `always`. `auto` returns a well-specified prompt — 25+ words that state their output format or at least two explicit constraints — with only its padding removed. |
 | `--constraints "<list>"` | string | — | Pipe-separated constraints, e.g. `"max 200 words\|no markdown"`. |
 | `--max-bytes <n>` | int | `1048576` | Size cap for `--file` / stdin. |
 | `--no-score` | flag | off | Skip the 0–100 score in the output. |
