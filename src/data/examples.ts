@@ -50,104 +50,136 @@ confirm or correct any before I draft:
 Markdown: H2 title, 3–5 paragraphs, one optional pull-quote.
 </output_format>`,
   scoreBefore: 30,
-  scoreAfter: 88
+  scoreAfter: 80
 };
 
+// Generated with the package CLI (ai-prompting 0.4.0, --mode standard --language en):
+// node ../ai-prompting/dist/src/cli.js improve --prompt "<before>" --mode standard --language en
 export const EXAMPLES: Example[] = [
   {
     label: 'Writing — vague request',
     before: 'help me write something good',
-    after: `<role>Senior editor focused on clarity, rhythm, and audience fit.</role>
-<objective>Write something good</objective>
+    after: `<role>
+Senior editor focused on clarity, rhythm, and audience fit.
+</role>
+
 <context>
-[ASSUMPTION: no additional context provided;
-the model should flag any load-bearing assumptions]
+[ASSUMPTION: no separate context block; the facts stated in the task are the context — flag load-bearing assumptions]
 </context>
-<task>help me write something good</task>
+
+<task>
+help me write something good
+</task>
+
 <constraints>
-- Explicitly distinguish facts, inferences, and assumptions.
-- If critical information is missing, declare it rather than inventing.
+- Unknown specifics (names, dates, figures) go in [brackets]; never invent them.
 </constraints>
+
 <output_format>
-Flowing prose; 60-90 word paragraphs;
-no bullets unless a real list.
-</output_format>`,
+Flowing prose; 60-90 word paragraphs; no bullets unless a real list; title + subtitle when appropriate.
+</output_format>
+
+<quality_bar>
+- Length, tone, and audience match the request.
+- Conformance to all constraints above.
+- Output matches the declared schema/format on the first try.
+</quality_bar>`,
     scoreBefore: 30,
-    scoreAfter: 68
+    scoreAfter: 63
   },
   {
     label: 'Coding — under-specified task',
     before: 'fix the bug in the auth flow',
-    after: `<role>Senior software engineer.</role>
-<objective>Locate and fix the failing branch in the auth flow.</objective>
+    after: `<role>
+Senior software engineer with experience in the requested language/framework.
+</role>
+
 <context>
-[ASSUMPTION: repo follows standard Express/Node layout;
-test command is "npm test"; failing test name is unspecified]
+[ASSUMPTION: no separate context block; the facts stated in the task are the context — flag load-bearing assumptions]
 </context>
+
 <task>
-1. Reproduce the failure.
-2. Identify the smallest code change that resolves it.
-3. Add a regression test.
+fix the bug in the auth flow
 </task>
+
 <constraints>
-- Do not refactor unrelated code.
-- Match existing code style and lint rules.
-- No new runtime dependencies.
+- Preserve existing public interfaces unless the task says otherwise.
+- No new dependencies unless requested.
 </constraints>
+
 <output_format>
-Unified diff + 2-3 sentence rationale + the new test.
-</output_format>`,
-    scoreBefore: 28,
-    scoreAfter: 79
+Code in a fenced block with language tag; precede with 2-4 lines explaining choices; follow with tests or follow-up notes if relevant.
+</output_format>
+
+<quality_bar>
+- Builds cleanly and the affected tests pass.
+- Conformance to all constraints above.
+- Output matches the declared schema/format on the first try.
+</quality_bar>`,
+    scoreBefore: 35,
+    scoreAfter: 67
   },
   {
     label: 'Research — missing scope',
     before: 'research llm prompt techniques',
-    after: `<role>Research analyst.</role>
-<objective>Survey current LLM prompting techniques with citations.</objective>
+    after: `<role>
+Senior research analyst with rigorous citation and source-triangulation method.
+</role>
+
 <context>
-[ASSUMPTION: scope = production-grade techniques as of 2026;
-audience = senior AI engineer]
+[ASSUMPTION: no separate context block; the facts stated in the task are the context — flag load-bearing assumptions]
 </context>
+
 <task>
-1. Identify the 5-7 most-cited techniques.
-2. For each: 1-paragraph summary + 1-2 references.
-3. Flag any technique whose evidence is anecdotal.
+research llm prompt techniques
 </task>
+
 <constraints>
-- Cite sources with a URL or DOI.
-- Distinguish facts from inferences.
-- Do not invent references.
+- Explicitly distinguish facts, inferences, and assumptions.
+- If critical information is missing, declare it rather than inventing.
 </constraints>
+
 <output_format>
-Markdown table: technique | summary | sources | confidence.
-</output_format>`,
-    scoreBefore: 32,
-    scoreAfter: 81
+Summary (3-5 sentences); findings with inline [n] citations; open questions; numbered source list (author, title, year, URL).
+</output_format>
+
+<quality_bar>
+- Answer is verifiable: every non-trivial claim has evidence or a source.
+- Conformance to all constraints above.
+- Output matches the declared schema/format on the first try.
+</quality_bar>`,
+    scoreBefore: 33,
+    scoreAfter: 75
   },
   {
     label: 'Agentic — tool use',
     before: 'use the database tools to find inactive users',
-    after: `<role>Data analyst with read-only DB access.</role>
-<objective>List users inactive for >= 90 days.</objective>
+    after: `<role>
+Tool-using agent: calls a tool only when a step needs it, recovers from errors, stops on explicit criteria.
+</role>
+
 <context>
-[ASSUMPTION: schema includes users.last_login_at;
-"inactive" = no login in the last 90 days]
+[ASSUMPTION: no separate context block; the facts stated in the task are the context — flag load-bearing assumptions]
 </context>
+
 <task>
-1. Query users where last_login_at < now() - 90 days.
-2. Return id, email, last_login_at, signup source.
-3. Limit to 1000 rows; offer to extend if needed.
+use the database tools to find inactive users
 </task>
+
 <constraints>
-- Read-only queries only.
-- Mask emails in the visible output (a***@example.com).
-- If the schema differs, ask before guessing.
+- On a tool error: retry once, then fall back or report.
 </constraints>
+
 <output_format>
-CSV with header row; total count summarized at the end.
-</output_format>`,
-    scoreBefore: 35,
-    scoreAfter: 82
+Final deliverable first; then a short log of actions taken (tool → result, one line each) and any unresolved issues.
+</output_format>
+
+<quality_bar>
+- Every step has an observable stop criterion.
+- Conformance to all constraints above.
+- Output matches the declared schema/format on the first try.
+</quality_bar>`,
+    scoreBefore: 38,
+    scoreAfter: 68
   }
 ];

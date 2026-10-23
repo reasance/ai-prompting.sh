@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/DocLayout.astro
-title: 'ai-prompting Skill — install in Claude Code, Codex, Cursor'
-description: 'How to install ai-prompting as an Agent Skill in Claude Code, Codex CLI, Cursor, Gemini CLI, and ~30 other agent hosts on the Agent Skills standard.'
+title: 'ai-prompting Skill — install in Claude Code, Codex, Gemini CLI'
+description: 'How to install ai-prompting as an Agent Skill in Claude Code, Codex, Gemini CLI, Mistral Vibe, Grok Build, Qwen Code and Cursor.'
 path: '/skill'
 ---
 
@@ -11,98 +11,95 @@ import AgentLogo from '../../components/AgentLogo.astro';
 # Install as a Skill
 
 A **Skill** is a self-contained instruction bundle that an agent host loads on demand. The
-Anthropic Agent Skills Open Standard (Dec 2025) defines a `SKILL.md` file with YAML frontmatter
-and a markdown body — that's all. `ai-prompting` ships one.
+[Agent Skills standard](https://agentskills.io) defines a `SKILL.md` file with YAML frontmatter and
+a markdown body, plus any files it references. `ai-prompting` ships one directory: `SKILL.md`,
+`references/`, `agents/`.
 
 When loaded, the host agent reads `SKILL.md`, optionally pulls in `references/*.md` if a deeper
 context is needed, and uses the agent's own language model to do the semantic rewrite. The CLI
 provides a deterministic baseline; the Skill provides creativity.
 
-## Two install paths
+## Install
 
-### A. As a project Skill
-
-Drop the `.claude/commands/improve.md` file (it ships in the npm package) into any repo, and the
-slash command becomes available in that project automatically. No global install, no per-host
-copying.
-
-<CodeBlock code={`npm i ai-prompting
-cp node_modules/ai-prompting/.claude/commands/improve.md \\
-   .claude/commands/ai-prompting:improve.md`} />
-
-### B. As a per-user Skill (cross-host)
-
-The package ships a Node-only installer that detects which agent hosts are available and copies
-the slash command into each user-level command directory. It is a script, not a CLI subcommand —
-run it by path:
+The package ships a Node-only installer that copies the Skill directory to where each host looks
+for skills. It is a script, not a CLI subcommand — run it by path:
 
 <CodeBlock code={`# global install
-node "$(npm root -g)/ai-prompting/scripts/install-command.js"
+node "$(npm root -g)/ai-prompting/scripts/install-skill.js"
 
 # project install
-node node_modules/ai-prompting/scripts/install-command.js`} />
+node node_modules/ai-prompting/scripts/install-skill.js`} />
 
-This will populate, for any host it finds:
+For every host it detects, it writes:
 
-- `~/.claude/commands/ai-prompting:improve.md` — Claude Code
-- `~/.codex/commands/ai-prompting:improve.md` — OpenAI Codex CLI
-- `~/.cursor/commands/ai-prompting-improve.md` — Cursor
+- `~/.claude/skills/ai-prompting/` — Claude Code
+- `~/.agents/skills/ai-prompting/` — Codex CLI / IDE, Gemini CLI, Grok Build (one shared copy)
+- `~/.vibe/skills/ai-prompting/` — Mistral Vibe
+- `~/.qwen/skills/ai-prompting/` — Qwen Code
+- `~/.cursor/commands/ai-prompting.md` — Cursor, a one-line command that points at the shared copy
 
-Pass `--list` to see what would be touched, `--dry-run` to preview, `--force` to overwrite.
+Pass `--list` to see the targets, `--host <id>` to pick one, `--dry-run` to preview, `--force` to
+overwrite. For a single project, copy the directory into the repo's own skills folder instead
+(`.claude/skills/ai-prompting/` or `.agents/skills/ai-prompting/`).
 
-## Slash command usage
+**Upgrading from 0.3.x:** the separate `/ai-prompting:improve` command is gone — it was a second
+entry for the same Skill. The installer removes `~/.claude/commands/ai-prompting:improve.md` when it
+installs the Claude Code skill.
 
-Once installed, invoke the Skill with:
+## Usage
 
-<CodeBlock code={`/ai-prompting:improve <your prompt here>`} />
+The host triggers the Skill from its description when you ask to improve a prompt, or you invoke
+it directly — `/ai-prompting` in Claude Code, `$ai-prompting` in Codex:
 
-You can pass the same flags as the CLI:
+<CodeBlock code={`/ai-prompting <your prompt here>`} />
 
-<CodeBlock code={`/ai-prompting:improve write a launch email --mode diagnostic --audience "B2B founders"`} />
+You can pass the same flags as the CLI, plus `--target` for a model or vendor:
+
+<CodeBlock code={`/ai-prompting write a launch email --mode diagnostic --audience "B2B founders" --target gpt-6`} />
 
 Natural-language fallbacks work too:
 
-<CodeBlock code={`/ai-prompting:improve scrivimi un'email di lancio in italiano, non chiedere`} />
+<CodeBlock code={`/ai-prompting scrivimi un'email di lancio in italiano, non chiedere`} />
 
 ## Compatibility matrix
 
 <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-2 my-6 not-prose">
   <AgentLogo name="Claude Code" supported="native" />
-  <AgentLogo name="OpenAI Codex CLI" supported="native" />
-  <AgentLogo name="Cursor" supported="native" />
-  <AgentLogo name="Gemini CLI" supported="native" />
-  <AgentLogo name="JetBrains Junie" supported="native" />
-  <AgentLogo name="Block Goose" supported="native" />
-  <AgentLogo name="AWS Kiro" supported="native" />
-  <AgentLogo name="ChatGPT (Apps SDK)" supported="adapter" note="reads agents/openai.yaml" />
-  <AgentLogo name="Continue.dev" supported="native" />
-  <AgentLogo name="Aider" supported="adapter" note="manual import" />
-  <AgentLogo name="GitHub Copilot Workspace" supported="adapter" />
-  <AgentLogo name="Amazon Q Developer" supported="adapter" />
+  <AgentLogo name="Gemini CLI" supported="native" note="paid API / Enterprise keys" />
+  <AgentLogo name="Mistral Vibe" supported="native" />
+  <AgentLogo name="OpenAI Codex CLI / IDE" supported="native" />
+  <AgentLogo name="Qwen Code" supported="native" />
+  <AgentLogo name="xAI Grok Build" supported="native" />
+  <AgentLogo name="ChatGPT" supported="adapter" note="skills via plugins" />
+  <AgentLogo name="Cursor" supported="adapter" note="command shim" />
 </div>
 
-"Native" hosts read the standard `commands/` directory. "Adapter" hosts need a small manifest or
-manual import — the package ships `agents/openai.yaml` for Apps-SDK style hosts.
+"Native" hosts load `SKILL.md` from their skills directory. "Adapter" hosts reach it another way —
+ChatGPT through plugins (`agents/openai.yaml` supplies the UI metadata), Cursor through a one-line
+command that points at the installed Skill. The list contains only hosts whose skills location we
+have checked against their documentation; any other host on the Agent Skills standard should work
+by copying the directory into its skills folder.
 
 ## How the Skill works under the hood
 
 1. The host loads `SKILL.md`. The frontmatter tells it when to trigger; the body explains the
    9-step decision flow.
-2. When the user invokes `/ai-prompting:improve`, the slash command parses the flags and hands off
-   to `SKILL.md` — it is a thin adapter and holds no copy of the procedure. The host then
-   classifies the input and (if needed) loads `references/*.md` for deeper rules.
+2. When the user invokes `/ai-prompting` with flags, the Skill maps them onto its own Options
+   table — there is no separate command file to drift. It classifies the input and, if needed,
+   loads `references/*.md` for deeper rules; when you name a target model, it looks up that
+   model's row in the capability matrix (reasoning control, sampling, structured output, tools).
 3. The agent does the semantic rewrite using its own LLM. Padding is stripped, the canonical XML
    scaffold is filled in, assumptions are made explicit, and a 0–100 score is estimated.
 4. The output is rendered in the format defined by `--mode`.
 
-The Skill is pure markdown. No code is downloaded, no network calls happen at install time, and
-the host's tool-allowlist (`allowed-tools: Read Bash`) is respected.
+The Skill is pure markdown. No code is downloaded and no network calls happen at install time.
 
 ## Troubleshooting
 
-If the slash command doesn't show up, run the doctor:
+If the Skill doesn't show up, check the target paths and run the doctor:
 
-<CodeBlock code={`ai-prompting doctor`} />
+<CodeBlock code={`node node_modules/ai-prompting/scripts/install-skill.js --list
+ai-prompting doctor`} />
 
-It checks the host's command directory, validates the `SKILL.md` frontmatter, and flags missing
-references.
+The doctor checks the `SKILL.md` frontmatter, that its references ship with the package, and that the CLI
+runs.

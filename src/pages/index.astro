@@ -8,12 +8,12 @@ const steps = [
   {
     n: '01',
     title: 'Install once',
-    body: 'Drop the Skill into Claude Code, Codex CLI, Cursor, or any of ~30 hosts on the Agent Skills standard.'
+    body: 'Install the Skill directory into Claude Code, Codex, Gemini CLI, Cursor, or any host on the Agent Skills standard.'
   },
   {
     n: '02',
     title: 'Invoke it',
-    body: 'Type /ai-prompting:improve <your prompt> in the host. Pass flags like --mode, --audience, --token-budget if you want.'
+    body: 'Type /ai-prompting <your prompt> in the host, or just ask it to improve a prompt. Pass flags like --mode, --target, --token-budget if you want.'
   },
   {
     n: '03',
@@ -36,7 +36,7 @@ const steps = [
     <div class="absolute inset-0 -z-10 grid-bg opacity-50 pointer-events-none"></div>
     <div class="inline-flex items-center gap-2 text-xs font-mono text-[var(--color-muted)] border border-[var(--color-border)] rounded-full px-3 py-1 mb-8">
       <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]"></span>
-      <span>v0.3.2 · Agent Skill for Claude Code · Codex CLI · Cursor · Gemini CLI</span>
+      <span>v0.4.0 · Agent Skill for Claude Code · Codex · Gemini CLI · Cursor</span>
     </div>
     <h1 class="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05] max-w-3xl">
       Improve any prompt.
@@ -86,7 +86,7 @@ const steps = [
   <section class="py-12 border-t border-[var(--color-border)]">
     <div class="flex items-baseline justify-between mb-6 flex-wrap gap-3">
       <h2 class="text-sm uppercase tracking-wide text-[var(--color-muted)]">Same 5-word ask, run through the Skill</h2>
-      <span class="text-xs font-mono text-[var(--color-muted)]">/ai-prompting:improve "..."</span>
+      <span class="text-xs font-mono text-[var(--color-muted)]">/ai-prompting "..."</span>
     </div>
     <BeforeAfter
       before={HERO_EXAMPLE.before}
@@ -109,8 +109,8 @@ const steps = [
         Universal
       </h3>
       <p class="text-sm text-[var(--color-muted)] leading-relaxed">
-        Native in Claude Code, Codex CLI, Cursor, Gemini CLI, JetBrains Junie, Block Goose, AWS
-        Kiro — ~30 agent hosts that adopted the Agent Skills standard. One file ships everywhere.
+        One Skill directory on the Agent Skills standard: Claude Code, Codex, Gemini CLI, Grok
+        Build, Mistral Vibe, Qwen Code read it natively; Cursor through a one-line command.
       </p>
     </div>
     <div>
